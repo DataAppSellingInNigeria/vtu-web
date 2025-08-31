@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { Check, ChevronRight, Smartphone, Wifi, Tv, Zap, MessageSquare, Shield, CreditCard, Bolt, PhoneCall, ArrowRight, Star, Users } from "lucide-react";
 
-// Tailwind preset expectations
-// - Ensure Tailwind is configured (content paths + @tailwind base/components/utilities in your CSS)
-// - Colors used: primary #0ea5e9 (sky-500), accent #22c55e (green-500), dark #0f172a (slate-900)
+import mtnLogo from "../assets/mtn.png";
+import airtelLogo from "../assets/airtel.png";
+import gloLogo from "../assets/glo.png";
+import nineMobileLogo from "../assets/9mobile.png";
 
 const networks = [
-    { key: "mtn", name: "MTN", logo: "https://upload.wikimedia.org/wikipedia/commons/0/02/MTN_Logo.svg" },
-    { key: "airtel", name: "Airtel", logo: "https://upload.wikimedia.org/wikipedia/commons/0/0e/Airtel_logo.svg" },
-    { key: "glo", name: "Glo", logo: "https://upload.wikimedia.org/wikipedia/commons/8/8d/Glo_logo.svg" },
-    { key: "etisalat", name: "9mobile", logo: "https://upload.wikimedia.org/wikipedia/commons/6/67/9mobile_logo.svg" },
+    { key: "mtn", name: "MTN", logo: mtnLogo },
+    { key: "airtel", name: "Airtel", logo: airtelLogo },
+    { key: "glo", name: "Glo", logo: gloLogo },
+    { key: "etisalat", name: "9mobile", logo: nineMobileLogo },
 ];
 
 const samplePlans = {
@@ -37,10 +38,15 @@ const samplePlans = {
 };
 
 const Stat = ({ icon: Icon, label, value, suffix }) => (
-    <div className="bg-white/90 backdrop-blur rounded-2xl shadow p-5 flex items-center gap-4">
-        <div className="p-3 rounded-xl bg-sky-100"><Icon className="w-6 h-6 text-sky-600" /></div>
-        <div>
-            <div className="text-2xl font-extrabold text-slate-900">{value}<span className="text-slate-400 text-lg ml-1">{suffix}</span></div>
+    <div className="bg-white/90 backdrop-blur rounded-2xl shadow p-5 flex flex-col items-center gap-4">
+        <div className="p-3 rounded-xl bg-sky-100">
+            <Icon className="w-6 h-6 text-sky-600" />
+        </div>
+        <div className="text-center">
+            <div className="text-2xl font-extrabold text-slate-900">
+                {value}
+                <span className="text-slate-400 text-lg ml-1">{suffix}</span>
+            </div>
             <div className="text-slate-600 text-sm">{label}</div>
         </div>
     </div>
@@ -99,26 +105,43 @@ export default function DahaTechLanding() {
                         <a href="#contact" className="hover:text-sky-700">Contact</a>
                     </nav>
                     <div className="flex items-center gap-3">
-                        <button className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 hover:bg-slate-50">
+                        <a
+                            href="https://wa.me/2348146149773" // Replace with your phone number
+                            target="_blank"
+                            className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 hover:bg-slate-50"
+                        >
                             <PhoneCall className="w-4 h-4" /> Support
-                        </button>
-                        <button className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white">
+                        </a>
+                        <a
+                            href="/login"  // Link to the login page
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white"
+                        >
                             <LockIcon /> Login
-                        </button>
+                        </a>
                     </div>
                 </div>
             </header>
 
             {/* HERO */}
             <section className="relative overflow-hidden">
-                <div className="mx-auto max-w-7xl px-4 py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
+                <div className="mx-auto max-w-7xl px-4 pb-10 pt-7 md:pb-20 md:pt-14 grid md:grid-cols-2 gap-10 items-center">
                     <div>
                         <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-sky-700 bg-sky-100 px-3 py-1 rounded-full">Nigeria’s friendly data hub</span>
                         <h1 className="mt-4 text-4xl md:text-5xl font-black tracking-tight text-slate-900">Buy cheap data, airtime & bills in seconds.</h1>
                         <p className="mt-4 text-slate-600 text-lg leading-relaxed">DahaTech lets you top up data, airtime, TV and electricity—fast, secure and affordable. Built for individuals, SMEs and resellers across Nigeria.</p>
                         <div className="mt-6 flex flex-wrap gap-3">
-                            <a href="#pricing" className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-semibold">Get Data <ArrowRight className="w-4 h-4" /></a>
-                            <a href="#features" className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-slate-200 hover:bg-slate-50 font-semibold">Become an Agent</a>
+                            <a
+                                href="#pricing"  // This will scroll to the pricing section
+                                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-semibold"
+                            >
+                                Get Data <ArrowRight className="w-4 h-4" />
+                            </a>
+                            <a
+                                href="#features"  // This will scroll to the features section
+                                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-slate-200 hover:bg-slate-50 font-semibold"
+                            >
+                                Become an Agent
+                            </a>
                         </div>
                         <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
                             <Stat icon={Users} label="Happy Customers" value="10k" suffix="+" />
@@ -131,7 +154,7 @@ export default function DahaTechLanding() {
                         <div className="relative rounded-3xl p-6 shadow-xl bg-white border border-slate-100">
                             <div className="flex items-center gap-3 mb-4">
                                 {networks.map(n => (
-                                    <img key={n.key} src={n.logo} alt={n.name} className="h-7 object-contain" />
+                                    <img key={n.key} src={n.logo} alt={n.name} className="h-12 object-contain" />
                                 ))}
                             </div>
                             <div className="rounded-2xl bg-slate-50 p-4">
@@ -207,8 +230,18 @@ export default function DahaTechLanding() {
                             <li className="flex items-center gap-2"><Check className="w-5 h-5" /> Wallet, cards & bank transfer</li>
                         </ul>
                         <div className="mt-6 flex gap-3">
-                            <a href="#" className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white text-slate-900 hover:bg-slate-100 font-semibold">Create free account</a>
-                            <a href="#" className="inline-flex items-center gap-2 px-5 py-3 rounded-xl ring-1 ring-white/60 hover:bg-white/10">Talk to sales</a>
+                            <a
+                                href="/register"  // Link to the registration page
+                                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white text-slate-900 hover:bg-slate-100 font-semibold"
+                            >
+                                Create free account
+                            </a>
+                            <a
+                                href="#"
+                                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl ring-1 ring-white/60 hover:bg-white/10"
+                            >
+                                Talk to sales
+                            </a>
                         </div>
                     </div>
                     <div className="shrink-0 grid grid-cols-2 gap-3 w-full md:w-[420px]">
