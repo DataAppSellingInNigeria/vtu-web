@@ -6,6 +6,9 @@ import airtelLogo from "../assets/airtel.png";
 import gloLogo from "../assets/glo.png";
 import nineMobileLogo from "../assets/9mobile.png";
 
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+
 const networks = [
     { key: "mtn", name: "MTN", logo: mtnLogo },
     { key: "airtel", name: "Airtel", logo: airtelLogo },
@@ -92,35 +95,7 @@ export default function DahaTechLanding() {
     return (
         <div className="min-h-screen bg-gradient-to-b from-sky-50 via-white to-white text-slate-800">
             {/* NAV */}
-            <header className="sticky top-0 z-40 bg-white/70 backdrop-blur border-b border-slate-100">
-                <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <div className="w-9 h-9 rounded-2xl bg-sky-600 grid place-items-center text-white font-black">D</div>
-                        <span className="font-extrabold tracking-tight text-slate-900 text-lg">DahaTech</span>
-                    </div>
-                    <nav className="hidden md:flex items-center gap-6 text-sm">
-                        <a href="#features" className="hover:text-sky-700">Features</a>
-                        <a href="#pricing" className="hover:text-sky-700">Pricing</a>
-                        <a href="#faq" className="hover:text-sky-700">FAQ</a>
-                        <a href="#contact" className="hover:text-sky-700">Contact</a>
-                    </nav>
-                    <div className="flex items-center gap-3">
-                        <a
-                            href="https://wa.me/2348146149773" // Replace with your phone number
-                            target="_blank"
-                            className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 hover:bg-slate-50"
-                        >
-                            <PhoneCall className="w-4 h-4" /> Support
-                        </a>
-                        <a
-                            href="/login"  // Link to the login page
-                            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white"
-                        >
-                            <LockIcon /> Login
-                        </a>
-                    </div>
-                </div>
-            </header>
+            <Navbar />
 
             {/* HERO */}
             <section className="relative overflow-hidden">
@@ -300,44 +275,7 @@ export default function DahaTechLanding() {
             </section>
 
             {/* FOOTER */}
-            <footer id="contact" className="bg-slate-900 text-slate-200">
-                <div className="mx-auto max-w-7xl px-4 py-12 grid md:grid-cols-4 gap-8">
-                    <div>
-                        <div className="flex items-center gap-2">
-                            <div className="w-9 h-9 rounded-2xl bg-white text-slate-900 grid place-items-center font-black">D</div>
-                            <span className="font-extrabold text-white text-lg">DahaTech</span>
-                        </div>
-                        <p className="mt-3 text-slate-400 text-sm">Fast, affordable and secure data, airtime and bills for everyone in Nigeria.</p>
-                    </div>
-                    <div>
-                        <h5 className="font-bold text-white mb-3">Products</h5>
-                        <ul className="space-y-2 text-slate-400 text-sm">
-                            <li>Data & Airtime</li>
-                            <li>TV Subscription</li>
-                            <li>Electricity Bills</li>
-                            <li>Bulk SMS</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h5 className="font-bold text-white mb-3">Company</h5>
-                        <ul className="space-y-2 text-slate-400 text-sm">
-                            <li>About</li>
-                            <li>Agents</li>
-                            <li>Careers</li>
-                            <li>Compliance</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h5 className="font-bold text-white mb-3">Get in touch</h5>
-                        <ul className="space-y-2 text-slate-400 text-sm">
-                            <li>support@dahatech.ng</li>
-                            <li>+234 800 000 0000</li>
-                            <li>Mon–Sun, 24/7</li>
-                        </ul>
-                        <div className="mt-4 text-xs text-slate-500">© {new Date().getFullYear()} DahaTech Nigeria Ltd.</div>
-                    </div>
-                </div>
-            </footer>
+            <Footer />
 
             {/* Floating help bubble */}
             <a href="#" className="fixed bottom-6 right-6 rounded-full shadow-xl bg-sky-600 hover:bg-sky-700 text-white p-4 inline-flex items-center gap-2">
