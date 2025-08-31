@@ -9,6 +9,7 @@ import Dashboard from '../pages/dashboard/Overview';
 import Wallet from '../pages/dashboard/Wallet';
 import Transactions from '../pages/dashboard/Transactions';
 import NotFound from '../pages/NotFound';
+import DahaTechLanding from '../pages/LandingPage';
 
 // Layout
 import DashboardLayout from '../layouts/DashboardLayout';
@@ -28,6 +29,14 @@ const AppRoutes = () => {
         <Router>
             <Routes>
                 {/* Public Routes */}
+                <Route
+                    path="/"
+                    element={
+                        <AuthRoute>
+                            <DahaTechLanding />
+                        </AuthRoute>
+                    }
+                />
                 <Route
                     path="/login"
                     element={
