@@ -29,14 +29,15 @@ const AppRoutes = () => {
         <Router>
             <Routes>
                 {/* Public Routes */}
-                <Route
+                {/* <Route
                     path="/"
                     element={
                         <AuthRoute>
                             <DahaTechLanding />
                         </AuthRoute>
                     }
-                />
+                /> */}
+                <Route path="/" element={<DahaTechLanding />} />
                 <Route
                     path="/login"
                     element={
