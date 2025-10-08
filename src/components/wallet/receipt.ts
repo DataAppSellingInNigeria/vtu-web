@@ -10,7 +10,7 @@ export const BRAND = {
   email: "support@dahatech.com",
   website: "https://dahatech.com",
   // Use an ABSOLUTE URL so it renders in print/iframe
-  logoUrl: "https://your-site-or-cdn.com/logo.png",
+  logoUrl: "../../assets/DT_logo1.png",
 };
 
 export function buildReceiptHTML(tx: Tx & { _orig?: any }) {

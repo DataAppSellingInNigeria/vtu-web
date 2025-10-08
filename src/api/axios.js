@@ -1,8 +1,13 @@
 // src/api/API.ts
 import axios from 'axios';
 
+const baseURL =
+  import.meta.env.PROD
+    ? import.meta.env.VITE_API_BASE_URL
+    : "/api"; 
+
 const API = axios.create({
-    baseURL: '/api',
+    baseURL,
     withCredentials: true,
     headers: { Accept: 'application/json' },
     timeout: 20000,
