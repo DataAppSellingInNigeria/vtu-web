@@ -46,9 +46,9 @@ const Stat = ({ icon: Icon, label, value, suffix }) => (
             <Icon className="w-6 h-6 text-sky-600" />
         </div>
         <div className="text-center">
-            <div className="text-2xl font-extrabold text-slate-900">
+            <div className="text-xl font-extrabold text-slate-900">
                 {value}
-                <span className="text-slate-400 text-lg ml-1">{suffix}</span>
+                <span className="text-slate-400 ml-1">{suffix}</span>
             </div>
             <div className="text-slate-600 text-sm">{label}</div>
         </div>

@@ -11,9 +11,41 @@ export default function DashboardLayout() {
             <aside className="w-64 bg-white shadow-lg">
                 <div className="p-4 text-lg font-bold border-b">VTU Admin</div>
                 <nav className="p-4 space-y-3">
-                    <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'text-blue-600 font-semibold' : 'text-gray-600'}>Overview</NavLink>
-                    <NavLink to="/dashboard/wallet" className={({ isActive }) => isActive ? 'text-blue-600 font-semibold' : 'text-gray-600'}>Wallet</NavLink>
-                    <NavLink to="/dashboard/transactions" className={({ isActive }) => isActive ? 'text-blue-600 font-semibold' : 'text-gray-600'}>Transactions</NavLink>
+                    <NavLink
+                        to="/dashboard"
+                        className={({ isActive }) =>
+                            `${isActive ? "text-blue-600 font-semibold" : "text-gray-600"} block`
+                        }
+                    >
+                        Overview
+                    </NavLink>
+
+                    <NavLink
+                        to="/dashboard/wallet"
+                        className={({ isActive }) =>
+                            `${isActive ? "text-blue-600 font-semibold" : "text-gray-600"} block`
+                        }
+                    >
+                        Wallet
+                    </NavLink>
+
+                    <NavLink
+                        to="/dashboard/wallet-page"
+                        className={({ isActive }) =>
+                            `${isActive ? "text-blue-600 font-semibold" : "text-gray-600"} block`
+                        }
+                    >
+                        Wallet Page
+                    </NavLink>
+
+                    <NavLink
+                        to="/dashboard/transactions"
+                        className={({ isActive }) =>
+                            `${isActive ? "text-blue-600 font-semibold" : "text-gray-600"} block`
+                        }
+                    >
+                        Transactions
+                    </NavLink>
                     <button
                         onClick={logout}
                         className="text-red-500 hover:underline mt-4 block"

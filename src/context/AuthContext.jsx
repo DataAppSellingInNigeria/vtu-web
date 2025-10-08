@@ -1,32 +1,46 @@
 // src/context/AuthContext.jsx
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useContext } from "react";
+import API from "../api/axios";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-    const [token, setToken] = useState(localStorage.getItem('token'));
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
+    // On mount, try to load the current user using the cookie
     useEffect(() => {
-        if (token) setUser({});
-        else setUser(null);
-    }, [token]);
+        (async () => {
+            try {
+                const { data } = await API.get("/auth/me");  // protected, uses cookie
+                setUser(data);
+                console.log(user)
+            } catch {
+                setUser(null);
+            } finally {
+                setLoading(false);
+            }
+        })();
+    }, []);
 
-    const login = (newToken) => {
-        localStorage.setItem('token', newToken);
-        setToken(newToken);
+    // Login now accepts credentials; server sets the cookie
+    const login = async ({ email, password }) => {
+        await API.post("/auth/login", { email, password }); // sets Set-Cookie
+        const { data } = await API.get("/auth/me");
+        setUser(data);
     };
 
-    const logout = () => {
-        localStorage.removeItem('token');
-        setToken(null);
+    const logout = async () => {
+        try { await API.post("/auth/logout"); } catch { }
+        setUser(null);
     };
 
     return (
-        <AuthContext.Provider value={{ token, user, login, logout, isAuthenticated: !!token }}>
-            {children}
+        <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, logout, loading }}>
+            {!loading && children}
         </AuthContext.Provider>
     );
 }
 
+export const useAuthContext = () => useContext(AuthContext);
 export default AuthContext;

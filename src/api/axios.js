@@ -1,13 +1,11 @@
+// src/api/API.ts
 import axios from 'axios';
 
 const API = axios.create({
-    baseURL: import.meta.env.CLIENT_URL || 'https://vtu-backend-xdmg.onrender.com/api/auth',
-});
-
-API.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token');
-    if (token) config.headers.Authorization = `Bearer ${token}`;
-    return config;
+    baseURL: '/api',
+    withCredentials: true,
+    headers: { Accept: 'application/json' },
+    timeout: 20000,
 });
 
 export default API;

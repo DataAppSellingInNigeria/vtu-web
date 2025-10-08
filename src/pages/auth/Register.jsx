@@ -1,103 +1,96 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import API from '../../api/axios';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { ClipLoader } from 'react-spinners';
-import { Eye, EyeOff } from 'lucide-react';
-import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+// IMPORTANT: use the axios instance that has withCredentials: true
+import API from "../../api/axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ClipLoader } from "react-spinners";
+import { Eye, EyeOff } from "lucide-react";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
+
+const phoneRegex = /^(?:\+234|0)(\d{10})$/;
 
 const Register = () => {
-    const [formData, setFormData] = useState({ name: '', email: '', phone: '', password: '' });
+    const [formData, setFormData] = useState({ name: "", email: "", phone: "", password: "" });
     const [error, setError] = useState(null);
-    const [isLoading, setIsLoading] = useState(false); // State to manage loading
-    const [phoneError, setPhoneError] = useState(''); // State for phone validation error
-    const [isChecked, setIsChecked] = useState(false); // State to manage checkbox
-    const [isPasswordVisible, setIsPasswordVisible] = useState(false); // State for password visibility
+    const [phoneError, setPhoneError] = useState("");
+    const [isChecked, setIsChecked] = useState(false);
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
-
-    // Regex for validating Nigerian phone number (+234 followed by 10 digits)
-    const phoneRegex = /^(?:\+234|0)(\d{10})$/;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        setFormData((p) => ({ ...p, [name]: value }));
+        if (name === "phone") setPhoneError("");
+        if (name === "email") setError(null);
+    };
 
-        if (name === 'phone') {
-            // Reset phone error as the user is typing
-            setPhoneError('');
-        }
+    const normalizePhone = (input) => {
+        let phone = input.trim();
+        // Convert +234xxxxxxxxxx -> 0xxxxxxxxxx
+        if (phone.startsWith("+234")) phone = "0" + phone.slice(4);
+        return phone;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
-        setIsLoading(true); // Set loading to true when form is submitted
+        setIsLoading(true);
 
-        // Validate phone number behind the scenes before form submission
-        let phone = formData.phone.trim();
-
-        // If the number starts with +234, replace it with 0
-        if (phone.startsWith('+234')) {
-            phone = '0' + phone.slice(4);
+        // Phone validation
+        const normalizedPhone = normalizePhone(formData.phone);
+        if (!phoneRegex.test(normalizedPhone)) {
+            setPhoneError("Please enter a valid Nigerian phone number.");
+            setIsLoading(false);
+            return;
         }
-
-        // Check if phone number is valid (either starting with 0 and 11 digits or +234 and 14 digits)
-        if (!phoneRegex.test(phone)) {
-            setPhoneError('Please enter a valid Nigerian phone number.');
-            setIsLoading(false); // Reset loading state if phone number is invalid
-            return; // Prevent form submission if phone number is invalid
-        }
-
-        // Update the form data with the corrected phone number
-        formData.phone = phone;
 
         if (!isChecked) {
-            setError('You must agree to the Terms and Conditions and Privacy Policy.');
-            setIsLoading(false); // Reset loading state if terms are not accepted
-            return; // Prevent form submission if terms are not agreed upon
+            setError("You must agree to the Terms and Conditions and Privacy Policy.");
+            setIsLoading(false);
+            return;
         }
 
         try {
-            // Send the registration data to the server
-            await API.post('/register', formData);
-            // Show success toast
-            toast.success('Registration successful! Please log in.', {
-                position: 'top-center',
-            });
-            navigate('/login');
+            // Send registration
+            const payload = { ...formData, phone: normalizedPhone };
+            const res = await API.post("/auth/register", payload);
+
+            // If backend auto-logs in by setting cookie on register:
+            if (res.data?.ok && res.data?.user) {
+                toast.success("Registration successful! Welcome 👋", { position: "top-center" });
+                // Optionally fetch /auth/me here if you keep user state in context
+                navigate("/dashboard");
+                return;
+            }
+
+            // Else (no auto-login): go to login
+            toast.success("Registration successful! Please log in.", { position: "top-center" });
+            navigate("/login");
         } catch (err) {
-            // Show error toast
-            setError(err.response?.data?.message || 'Registration failed.');
-            toast.error(err.response?.data?.message || 'Registration failed.', {
-                position: 'top-center',
-            });
+            const msg =
+                err?.response?.data?.message ||
+                (err?.response?.status === 409 ? "Email already registered." : "Registration failed.");
+            setError(msg);
+            toast.error(msg, { position: "top-center" });
         } finally {
-            setIsLoading(false); // Reset loading state when the request is finished
+            setIsLoading(false);
         }
     };
 
     return (
         <div className="min-h-screen flex flex-col">
-            {/* Navbar Component */}
             <Navbar />
 
             <div className="flex items-center justify-center bg-gray-100 flex-grow py-2">
                 <form onSubmit={handleSubmit} className="bg-white px-8 py-4 rounded shadow-md w-full max-w-md">
                     <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Register</h2>
 
-                    {/* Error Message */}
                     {error && (
                         <p className="mb-4 p-4 text-sm text-white bg-red-500 rounded-md shadow-md">
                             {error}
-                        </p>
-                    )}
-
-                    {/* Success Message */}
-                    {!error && !isLoading && (
-                        <p className="mb-4 p-4 text-sm text-white bg-green-500 rounded-md shadow-md">
-                            Registration successful! Please log in.
                         </p>
                     )}
 
@@ -138,13 +131,13 @@ const Register = () => {
                             placeholder="Enter your phone number"
                             required
                         />
-                        {phoneError && <p className="text-red-600 text-sm">{phoneError}</p>} {/* Show phone error */}
+                        {phoneError && <p className="text-red-600 text-sm">{phoneError}</p>}
                     </div>
 
                     <div className="mb-2 relative">
                         <label className="block text-sm font-medium mb-1 text-gray-600">Password</label>
                         <input
-                            type={isPasswordVisible ? 'text' : 'password'} // Toggle between password and text type
+                            type={isPasswordVisible ? "text" : "password"}
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
@@ -154,18 +147,13 @@ const Register = () => {
                         />
                         <button
                             type="button"
-                            onClick={() => setIsPasswordVisible(!isPasswordVisible)} // Toggle visibility
+                            onClick={() => setIsPasswordVisible((v) => !v)}
                             className="absolute right-3 top-11 transform -translate-y-1/2 text-gray-500"
                         >
-                            {isPasswordVisible ? (
-                                <EyeOff />
-                            ) : (
-                                <Eye />
-                            )}
+                            {isPasswordVisible ? <EyeOff /> : <Eye />}
                         </button>
                     </div>
 
-                    {/* Terms and Privacy Policy Checkbox */}
                     <div className="mb-4 flex items-center">
                         <input
                             type="checkbox"
@@ -176,42 +164,35 @@ const Register = () => {
                         />
                         <label
                             htmlFor="terms"
-                            className={`ml-2 text-sm ${!isChecked ? 'text-red-600' : 'text-gray-600'}`} // Red if not checked
+                            className={`ml-2 text-sm ${!isChecked ? "text-red-600" : "text-gray-600"}`}
                         >
                             I agree to the{" "}
-                            <a href="/terms-and-conditions" className="text-sky-600">
-                                Terms and Conditions
-                            </a>{" "}
+                            <a href="/terms-and-conditions" className="text-sky-600">Terms and Conditions</a>{" "}
                             and{" "}
-                            <a href="/privacy-policy" className="text-sky-600">
-                                Privacy Policy
-                            </a>.
+                            <a href="/privacy-policy" className="text-sky-600">Privacy Policy</a>.
                         </label>
                     </div>
 
                     <button
                         type="submit"
                         className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                        disabled={isLoading} // Disable button during loading
+                        disabled={isLoading}
                     >
                         {isLoading ? (
                             <div className="flex justify-center">
-                                <ClipLoader size={20} color="#fff" /> {/* Show loading spinner */}
+                                <ClipLoader size={20} color="#fff" />
                             </div>
                         ) : (
-                            'Sign Up'
+                            "Sign Up"
                         )}
                     </button>
 
                     <p className="mt-4 text-sm text-center text-gray-600">
                         Already have an account?{" "}
-                        <a href="/login" className="text-blue-500 hover:underline">
-                            Login
-                        </a>
+                        <a href="/login" className="text-blue-500 hover:underline">Login</a>
                     </p>
                 </form>
 
-                {/* Toast Container to display notifications */}
                 <ToastContainer />
             </div>
 
