@@ -31,10 +31,6 @@ export default function WalletPage() {
           <WalletCard ref={walletRef} onFund={() => setFundOpen(true)} />
           <QuickActions />
 
-          <Link to="/buy/transactions-logs" className="flex items-center gap-2">
-            Transactions List
-          </Link>
-
           <TransactionsList />
         </div>
       </main>

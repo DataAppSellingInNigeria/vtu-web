@@ -11,7 +11,6 @@ export type WalletCardHandle = { refresh: () => void };
 function WalletCard({ onFund }: Props, ref: React.Ref<WalletCardHandle>) {
     const { data, isLoading, refetch, isFetching } = useWallet();
 
-    // Make ref.current.refresh() call the hook's refetch()
     useImperativeHandle(ref, () => ({ refresh: () => refetch() }), [refetch]);
 
     return (
@@ -31,24 +30,16 @@ function WalletCard({ onFund }: Props, ref: React.Ref<WalletCardHandle>) {
             {/* Body */}
             <div className="p-5">
                 {isLoading ? (
-                    <div className="mt-2 grid grid-cols-2 gap-3">
-                        <div className="h-16 rounded-xl bg-slate-100 animate-pulse" />
+                    <div className="mt-2">
                         <div className="h-16 rounded-xl bg-slate-100 animate-pulse" />
                     </div>
                 ) : (
-                    <div className="mt-2 grid grid-cols-2 gap-3">
+                    <div className="mt-2">
                         <div className="rounded-xl p-4 bg-sky-50 border border-sky-100">
-                            <div className="text-xs text-sky-700/80">Available</div>
-                            <div className="text-xl font-extrabold text-slate-900">
+                            <div className="text-xs text-sky-700/80">Available Balance</div>
+                            <div className="text-2xl font-extrabold text-slate-900">
                                 {(data?.currency ?? "NGN")}{" "}
-                                {(data?.balance ?? 30).toLocaleString()}
-                            </div>
-                        </div>
-                        <div className="rounded-xl p-4 bg-slate-50 border border-slate-200">
-                            <div className="text-xs text-slate-600">Frozen</div>
-                            <div className="text-xl font-extrabold text-slate-900">
-                                {(data?.currency ?? "NGN")}{" "}
-                                {(data?.frozen ?? 30).toLocaleString()}
+                                {(data?.balance ?? 0).toLocaleString()}
                             </div>
                         </div>
                     </div>
