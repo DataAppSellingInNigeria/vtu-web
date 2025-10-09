@@ -142,7 +142,7 @@ export default function Navbar() {
                         </NavLink>
 
                         <NavLink
-                            to="/wallet-page"
+                            to="/buy/transactions-logs"
                             className={({ isActive }) =>
                                 `block px-3 py-2 rounded-lg ${isActive ? "text-yellow-200 underline" : "text-white"
                                 } hover:bg-sky-600`
