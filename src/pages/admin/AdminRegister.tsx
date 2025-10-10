@@ -76,7 +76,7 @@ export default function AdminRegister() {
         try {
             // Send to admin endpoint with roles
             const payload = { ...formData, phone: normalizedPhone, roles };
-            const res = await API.post("/admin/auth/register", payload);
+            const res = await API.post("/auth/register", payload);
 
             // If backend sets cookie and returns user, navigate to admin area
             if (res.data?.ok && res.data?.user) {
